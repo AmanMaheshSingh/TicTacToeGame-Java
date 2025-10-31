@@ -4,87 +4,95 @@ public class TicTacToe {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        //Player Symbols
+        // Symbols for players
         String player1 = "X";
         String player2 = "O";
 
-        boolean playAgain = true; // to control game replay
+        //menu to select the mode
+        System.out.println("Welcome to Tic Tac Toe");
+        System.out.println("Choose Mode:");
+        System.out.println("1. Player vs Player");
+        System.out.println("2. Player vs Computer");
+        System.out.print("Enter your choice: ");
+        int mode = sc.nextInt();
 
-        //Main Game Loop - allows replaying
-        while (playAgain) {
+        boolean playAgain;
 
-            //initialize board for each new game
+        //Main game loop for replay
+        do {
             String[] board = {"1","2","3","4","5","6","7","8","9"};
+            boolean gameOver = false;
 
-            //Track Game State
-            boolean gameOver = false; //became true when someone wins
-
-            //Loop to Allow Multiple Turns
             for (int turn = 0; turn < board.length; turn++) {
-
-                //To Know Whose Turn it is
-                String currentplayer = (turn % 2 == 0) ? player1 : player2;
-                System.out.println("Player " + (turn % 2 + 1) + " (" + currentplayer + ") - choose a position (1-9): ");
-
-                //Take Input from the user
-                int position = sc.nextInt();
-
-                //Check if position is valid between 1 -9
-                if (position < 1 || position > 9) {
-                    System.out.println("Invalid position! Try again.");
-                    turn--; //repeat the turn
-                    continue;
-                }
-
-                //if Position is Available
-                if (board[position - 1].equals("X") || board[position - 1].equals("O")) {
-                    System.out.println("Position already taken! Try again.");
-                    turn--; //to repeat the turn
-                    continue;
-                }
-
-                //update the board with current player symbol
-                board[position - 1] = currentplayer;
-
-                //print updated board
                 printBoard(board);
 
-                //Check for winner after each move
-                if (checkWinner(board)) {
-                    System.out.println("Player " + (turn % 2 + 1) + " (" + currentplayer + ") wins!");
-                    gameOver = true;
-                    break; // stop further moves
+                String currentPlayer = (turn % 2 == 0) ? player1 : player2;
+                int position = -1;
+
+                if (mode == 2 && currentPlayer.equals(player2)) {
+                    //Computer’s turn (will add AI logic on Day 6)
+                    System.out.println("Computer (" + player2 + ") is thinking...");
+                    position = getComputerMove(board); // placeholder
+                } else {
+                    //Human player's turn
+                    System.out.print("Player " + (turn % 2 + 1) + " (" + currentPlayer + ") - choose a position (1-9): ");
+                    
+                    if (!sc.hasNextInt()) { // handle invalid input
+                        System.out.println("Invalid input! Enter a number between 1–9.");
+                        sc.next(); // clear invalid input
+                        turn--;
+                        continue;
+                    }
+
+                    position = sc.nextInt();
                 }
 
-                //If all cells filled and no winner → draw
+                // Validate position range
+                if (position < 1 || position > 9) {
+                    System.out.println("Invalid position! Try again.");
+                    turn--;
+                    continue;
+                }
+
+                // Check if position already taken
+                if (board[position - 1].equals("X") || board[position - 1].equals("O")) {
+                    System.out.println("Position already taken! Try again.");
+                    turn--;
+                    continue;
+                }
+
+                //Update board
+                board[position - 1] = currentPlayer;
+
+                //Check for winner
+                if (checkWinner(board)) {
+                    printBoard(board);
+                    if (mode == 2 && currentPlayer.equals(player2)) {
+                        System.out.println("Computer (" + currentPlayer + ") wins!");
+                    } else {
+                        System.out.println("Player " + (turn % 2 + 1) + " (" + currentPlayer + ") wins!");
+                    }
+                    gameOver = true;
+                    break;
+                }
+
+                //Check for draw
                 if (turn == 8 && !gameOver) {
+                    printBoard(board);
                     System.out.println("It's a draw!");
                 }
             }
 
-            //Ask if players want to play again - and validate input properly
-            while (true) {
-                System.out.print("Do you want to play again? (yes/no): ");
-                String response = sc.next().toLowerCase();
+            System.out.print("Play again? (yes/y to continue): ");
+            String again = sc.next().toLowerCase();
+            playAgain = again.equals("yes") || again.equals("y");
 
-                if (response.equals("yes") || response.equals("y")) {
-                    System.out.println("\nStarting a new game...\n");
-                    break; //break this inner loop → start new game
-                } 
-                else if (response.equals("no") || response.equals("n")) {
-                    playAgain = false; // exit main loop
-                    System.out.println("Thanks for playing Tic Tac Toe!");
-                    break; //exit inner loop also
-                } 
-                else {
-                    //if input is invalid, ask again
-                    System.out.println("Please enter 'yes' or 'no' only!");
-                }
-            }
-        }
+        } while (playAgain);
+
+        System.out.println("Thanks for playing Tic Tac Toe!");
     }
 
-    //Function to print the board
+    // Function to print the board
     public static void printBoard(String[] board) {
         System.out.println();
         for (int i = 0; i < board.length; i++) {
@@ -99,27 +107,28 @@ public class TicTacToe {
         System.out.println("\n");
     }
 
-    //Function to check if a player has won
+    // Function to check winner
     public static boolean checkWinner(String[] b) {
-        // Define all 8 winning combinations (indexes)
         int[][] winCombos = {
-            {0, 1, 2}, // row 1
-            {3, 4, 5}, // row 2
-            {6, 7, 8}, // row 3
-            {0, 3, 6}, // column 1
-            {1, 4, 7}, // column 2
-            {2, 5, 8}, // column 3
-            {0, 4, 8}, // diagonal 1
-            {2, 4, 6}  // diagonal 2
+            {0, 1, 2}, {3, 4, 5}, {6, 7, 8},
+            {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
+            {0, 4, 8}, {2, 4, 6}
         };
-
-        //Loop through all combinations and check
         for (int[] combo : winCombos) {
             if (b[combo[0]].equals(b[combo[1]]) && b[combo[1]].equals(b[combo[2]])) {
-                // if all three same (either X or O), someone wins
                 return true;
             }
         }
         return false;
+    }
+
+    // Placeholder for AI logic (Day 6)
+    public static int getComputerMove(String[] board) {
+        Random rand = new Random();
+        int move;
+        do {
+            move = rand.nextInt(9) + 1;
+        } while (board[move - 1].equals("X") || board[move - 1].equals("O"));
+        return move;
     }
 }
