@@ -21,7 +21,7 @@ public class TicTacToe {
             System.out.println("1. Player vs Player");
             System.out.println("2. Player vs Computer (Easy)");
             System.out.println("3. Player vs Computer (Medium)");
-            System.out.println("4. Player vs Computer (Hard - Minimax)");
+            System.out.println("4. Player vs Computer (Hard)");
             System.out.print("Enter choice (1-4): ");
             if (!sc.hasNextInt()) { sc.next(); continue; }
             mode = sc.nextInt();
