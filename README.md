@@ -12,8 +12,8 @@ A console-based Tic Tac Toe game in Java — built as part of a learn-in-public 
 
 ## How to run
 1. Clone repo: https://github.com/AmanMaheshSingh/TicTacToeGame-Java
-2. Compile: TicTacToe
-3. Run: TicTacToe
+2. Compile: TicTacToe.java
+3. Run: TicTacToe.java
 
 
 ## Development Roadmap
