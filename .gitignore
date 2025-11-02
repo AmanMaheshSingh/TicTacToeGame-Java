@@ -1,0 +1,53 @@
+# =====================
+# Java
+# =====================
+*.class
+*.jar
+*.war
+*.ear
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.zip
+*.tar.gz
+*.rar
+
+# =====================
+# IntelliJ IDEA
+# =====================
+.idea/
+*.iml
+out/
+
+# =====================
+# Eclipse
+# =====================
+.project
+.classpath
+.settings/
+bin/
+
+# =====================
+# VS Code
+# =====================
+.vscode/
+
+# =====================
+# macOS / Windows
+# =====================
+.DS_Store
+Thumbs.db
+
+# =====================
+# Temporary or custom
+# =====================
+temp/
+*.tmp
